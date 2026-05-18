@@ -39,8 +39,12 @@ app.use((err, req, res, next) => {
     res.status(500).json({ error: 'Something went wrong!', details: err.message });
 });
 
-app.listen(port, () => {
-    console.log(`Server running on port ${port}`);
-});
+// Only start the HTTP server in local/non-serverless environments.
+// On Vercel, @vercel/node uses the default export (app) directly as the handler.
+if (!process.env.VERCEL) {
+    app.listen(port, () => {
+        console.log(`Server running on port ${port}`);
+    });
+}
 
 export default app;

@@ -1,15 +1,19 @@
 {
   "version": 2,
-  "buildCommand": "cd frontend && npm install && npm run build",
-  "outputDirectory": "frontend/dist",
-  "installCommand": "cd backend && npm install",
-  "functions": {
-    "backend/src/server.js": {
-      "runtime": "nodejs20.x"
+  "builds": [
+    {
+      "src": "backend/src/server.js",
+      "use": "@vercel/node",
+      "config": { "includeFiles": ["backend/src/**"] }
+    },
+    {
+      "src": "frontend/package.json",
+      "use": "@vercel/static-build",
+      "config": { "distDir": "dist" }
     }
-  },
-  "rewrites": [
-    { "source": "/api/(.*)", "destination": "/backend/src/server.js" },
-    { "source": "/((?!api/).*)", "destination": "/index.html" }
+  ],
+  "routes": [
+    { "src": "/api/(.*)", "dest": "/backend/src/server.js" },
+    { "src": "/(.*)", "dest": "/frontend/dist/$1" }
   ]
 }
