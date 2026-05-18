@@ -7,7 +7,7 @@ import mongoose from 'mongoose';
 import { rateLimit } from 'express-rate-limit';
 
 const app = express();
-const port = process.env.PORT || 5000;
+const port = process.env.PORT;
 
 // Connect to MongoDB
 mongoose.connect(process.env.DATABASE_URL)

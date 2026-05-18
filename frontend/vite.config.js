@@ -8,7 +8,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:5000', // Points to your local Express backend port
+        target: 'http://localhost:5001', // Points to your local Express backend port
         changeOrigin: true,
         secure: false,
       },
