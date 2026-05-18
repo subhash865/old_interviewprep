@@ -1,18 +1,23 @@
-import 'dotenv/config'; // ← must be first: loads .env before any other module initializes
+import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
-import multer from 'multer';
-import mongoose from 'mongoose';
-
 import { rateLimit } from 'express-rate-limit';
+import { connectDB } from './db.js';  // ← add this
+
+import apiRoutes from './routes/index.js';
 
 const app = express();
-const port = process.env.PORT;
 
-// Connect to MongoDB
-mongoose.connect(process.env.DATABASE_URL)
-    .then(() => console.log('Connected to MongoDB via Mongoose'))
-    .catch(err => console.error('MongoDB connection error:', err));
+// ✅ Connect before every request (uses cached connection)
+app.use(async (req, res, next) => {
+    try {
+        await connectDB();
+        next();
+    } catch (err) {
+        console.error('MongoDB connection failed:', err);
+        res.status(500).json({ error: 'Database connection failed' });
+    }
+});
 
 const apiLimiter = rateLimit({
     windowMs: 15 * 60 * 1000,
@@ -24,27 +29,20 @@ app.use(cors());
 app.use(express.json());
 app.use('/api', apiLimiter);
 
-// Routes
 app.get('/api/health', (req, res) => {
     res.json({ status: 'ok', message: 'AI Interview Backend Running' });
 });
 
-// Import modules
-import apiRoutes from './routes/index.js';
 app.use('/api', apiRoutes);
 
-// Error handling middleware
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).json({ error: 'Something went wrong!', details: err.message });
 });
 
-// Only start the HTTP server in local/non-serverless environments.
-// On Vercel, @vercel/node uses the default export (app) directly as the handler.
 if (!process.env.VERCEL) {
-    app.listen(port, () => {
-        console.log(`Server running on port ${port}`);
-    });
+    const port = process.env.PORT || 5000;
+    app.listen(port, () => console.log(`Server running on port ${port}`));
 }
 
 export default app;
