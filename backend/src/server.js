@@ -1,10 +1,8 @@
+import 'dotenv/config'; // ← must be first: loads .env before any other module initializes
 import express from 'express';
 import cors from 'cors';
-import dotenv from 'dotenv';
 import multer from 'multer';
 import mongoose from 'mongoose';
-
-dotenv.config();
 
 import { rateLimit } from 'express-rate-limit';
 

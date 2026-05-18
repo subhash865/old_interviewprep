@@ -24,12 +24,10 @@ export default function Layout() {
                 <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
                     {/* Logo */}
                     <Link to="/setup" className="flex items-center gap-2.5 group">
-                        <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center group-hover:bg-white/90 transition-colors">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="black">
-                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15v-4H7l5-8v4h4l-5 8z"/>
-                            </svg>
+                        <div className="w-8 h-8 bg-[#0d1117] rounded-xl flex items-center justify-center border border-white/10 group-hover:border-white/25 transition-colors overflow-hidden">
+                            <img src="/favicon.png" alt="AI-Interview Prep" className="w-full h-full object-cover rounded-xl" />
                         </div>
-                        <span className="font-semibold text-white tracking-tight">InterviewAI</span>
+                        <span className="font-semibold text-white tracking-tight">AI-Interview Prep</span>
                     </Link>
 
                     {/* Nav links */}
