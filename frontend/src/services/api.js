@@ -1,7 +1,9 @@
 import axios from 'axios';
 
+// When deployed on Vercel, a relative path '/api' will automatically hit the same domain.
+// Locally, it will fall back to your local development backend server.
 const api = axios.create({
-    baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5001/api',
+    baseURL: import.meta.env.VITE_API_URL || '/api',
 });
 
 api.interceptors.request.use((config) => {
