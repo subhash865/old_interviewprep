@@ -1,6 +1,8 @@
 import express from 'express';
 import multer from 'multer';
 import fs from 'fs';
+import os from 'os';
+import path from 'path';
 import { authenticateToken } from '../middleware/auth.js';
 import { parseResumePdf } from '../services/resumeService.js';
 import { processJobDescription } from '../services/jdService.js';
@@ -19,7 +21,17 @@ import DSASubmission from '../models/DSASubmission.js';
 import ConceptSubmission from '../models/ConceptSubmission.js';
 
 const router = express.Router();
-const upload = multer({ dest: 'uploads/' });
+
+// Configure diskStorage to direct files safely into Vercel's allowed scratch space (/tmp)
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, os.tmpdir());
+    },
+    filename: (req, file, cb) => {
+        cb(null, `${Date.now()}-${file.originalname}`);
+    }
+});
+const upload = multer({ storage: storage });
 
 // 1. Initialize Session
 router.post('/start', authenticateToken, upload.single('resume'), async (req, res) => {
