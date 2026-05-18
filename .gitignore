@@ -1,0 +1,21 @@
+# Root
+.env
+node_modules/
+
+# Backend
+backend/node_modules/
+backend/uploads/
+backend/db_report.json
+backend/models.json
+backend/models_output.txt
+backend/checkData.js
+backend/getModels.js
+backend/test-pdf.js
+backend/testMongo.js
+backend/error*.log
+backend/prisma/
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+.DS_Store
