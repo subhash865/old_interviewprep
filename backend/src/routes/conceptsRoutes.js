@@ -1,12 +1,13 @@
 import express from 'express';
 import multer from 'multer';
+import os from 'os';
 import { authenticateToken } from '../middleware/auth.js';
 import { generateConceptQuestion, evaluateMCQAnswer, evaluateConceptAnswer } from '../services/conceptsService.js';
 import { transcribeAudio } from '../services/audioService.js';
 import ConceptSubmission from '../models/ConceptSubmission.js';
 
 const router = express.Router();
-const upload = multer({ dest: 'uploads/' });
+const upload = multer({ dest: os.tmpdir() });
 
 // POST /concepts/question — Generate MCQ or voice question
 router.post('/question', authenticateToken, async (req, res) => {
